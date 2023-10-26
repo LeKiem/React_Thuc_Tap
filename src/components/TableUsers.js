@@ -4,6 +4,7 @@ import { fetchAllUser } from "../service/UserService";
 import ModalAddNew from "./ModalAddNew";
 import ReactPaginate from "react-paginate";
 import ModalEditUser from "./ModalEditUser";
+import ModalConfirm from "./ModalConfirm";
 import _ from "lodash";
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
@@ -11,10 +12,14 @@ const TableUsers = (props) => {
   const [totalPages, setTotalPages] = useState([0]);
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+  const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataUserEdit, setDataUserEdit] = useState({});
+  const [dataUserDelete, setDataUserDelete] = useState({});
+
   const handleClose = () => {
     setIsShowModalAddNew(false);
     setIsShowModalEdit(false);
+    setIsShowModalDelete(false);
   };
 
   const handleUpdateTable = (user) => {
@@ -50,6 +55,10 @@ const TableUsers = (props) => {
     setListUsers(cloneListUser);
   };
   // console.log(listUsers);
+  const handleDeleteUser = (user) => {
+    setIsShowModalDelete(true);
+    setDataUserDelete(user);
+  };
   return (
     <>
       <div className="my-4 add-new">
@@ -90,7 +99,12 @@ const TableUsers = (props) => {
                     >
                       Edit
                     </button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      onClick={() => handleDeleteUser(item)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
@@ -126,6 +140,11 @@ const TableUsers = (props) => {
         dataUserEdit={dataUserEdit}
         handleClose={handleClose}
         handleEditUserFromModal={handleEditUserFromModal}
+      />
+      <ModalConfirm
+        show={isShowModalDelete}
+        handleClose={handleClose}
+        dataUserDelete={dataUserDelete}
       />
     </>
   );
