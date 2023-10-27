@@ -1,22 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { loginApi } from "../service/UserService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+// import { useEffect } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { loginContext } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [loadingApi, setLoadingApi] = useState(false);
 
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      navigate("/");
-    }
-  });
+  //   useEffect(() => {
+  //     let token = localStorage.getItem("token");
+  //     if (token) {
+  //       loginContext(email, res.token);
+  //       navigate("/");
+  //     }
+  //   });
+
+  const handleGoBack = () => {
+    navigate("/");
+  };
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -26,7 +33,8 @@ const Login = () => {
     setLoadingApi(true);
     let res = await loginApi(email, password);
     if (res && res.token) {
-      localStorage.setItem("token", res.token);
+      //   localStorage.setItem("token", res.token);
+      loginContext(email, res.token);
       navigate("/");
     } else {
       if (res && res.status === 400) {
@@ -71,7 +79,8 @@ const Login = () => {
       </button>
       <div className="back">
         {" "}
-        <i class="fas fa-chevron-left"></i>Go back
+        <i class="fas fa-chevron-left"></i>
+        <span onClick={() => handleGoBack()}>Go back</span>
       </div>
     </div>
   );
