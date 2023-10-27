@@ -1,5 +1,5 @@
 // import logo from "./logo.svg";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 import "./App.scss";
 import Header from "./components/Header";
 
@@ -13,6 +13,8 @@ import AppRoutes from "./routes/AppRoutes";
 // import { Row } from "react-bootstrap";
 
 function App() {
+  const dataUserRedux = useSelector((state) => state.user.account);
+  console.log("0000", dataUserRedux);
   const { user, loginContext } = useContext(UserContext);
 
   useEffect(() => {
